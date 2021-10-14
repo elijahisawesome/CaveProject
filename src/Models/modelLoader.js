@@ -1,5 +1,6 @@
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import Well_And_Scene from './Well_And_Scene.glb'
+import Text_And_Keys from './Well_Text_And_Keys.glb';
 
 
 
@@ -19,11 +20,16 @@ const modelLoader = function(){
     let wellAndScene = loader.loadAsync(
         Well_And_Scene,
         null,
-        function(error){console.log(error)}
+        function(error){console.error(error)}
+    )
+    let textAndKeys = loader.loadAsync(
+        Text_And_Keys,
+        null,
+        function(error){console.error(error)}
     )
 
     
-        return Promise.all([wellAndScene]).then((results)=>{
+        return Promise.all([wellAndScene, textAndKeys]).then((results)=>{
         models = results;
         return models;
     });

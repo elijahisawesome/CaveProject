@@ -57,7 +57,7 @@ module.exports = {
           ],
         },
         {
-          test: /\.(mkv)$/,
+          test: /\.(webm)$/,
           use: ['file-loader'],
         },
       ],

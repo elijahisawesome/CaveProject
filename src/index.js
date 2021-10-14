@@ -1,5 +1,5 @@
 import modelLoader from './Models/modelLoader.js';
-import video from './Models/0001-0240.mkv';
+import video from './Models/Well_Water.webm';
 
 const THREE = require('three');
 
@@ -20,6 +20,8 @@ const main = (function(){
     document.addEventListener('mousemove', look);
     document.addEventListener('click', requestPointerLock);
 
+    
+
     function logKey(e){
         if(e.key== 'w'){
             movementArray[0] = true;
@@ -32,6 +34,20 @@ const main = (function(){
         }
         if(e.key == 'd'){
             movementArray[3] = true;
+        }
+
+        //testing shit
+        if(e.key == 'ArrowUp'){
+            positionTexture(.01, 0);
+        }
+        if(e.key == 'ArrowDown'){
+            positionTexture(-.01, 0);
+        }
+        if(e.key == 'ArrowLeft'){
+            positionTexture(0, -.01);
+        }
+        if(e.key == 'ArrowRight'){
+            positionTexture(0, .01);
         }
     }
     function removeKey(e){
@@ -48,15 +64,9 @@ const main = (function(){
             movementArray[3] = false;
         }
     }
+
+    //spin off to own script.
     function look(e){
-        
-        /*
-        THREE.MathUtils.clamp(camera.quaternion.y, -.02, .02);
-        THREE.MathUtils.clamp(camera.quaternion.x, -.02, .02);
-        
-        camera.rotation.y -= (e.movementX*.001);
-        camera.rotation.x -= (e.movementY*.001);
-        */
        eulerCamera.y -= e.movementX * .001;
        eulerCamera.x -= e.movementY * .001;
        camera.quaternion.setFromEuler(eulerCamera);
@@ -76,12 +86,21 @@ const main = (function(){
             console.log(result.scene);
             scene.add(result.scene);
         })
+
+        
         const theeVideo = document.createElement('video');
         theeVideo.src = video;
-        const texture = new THREE.VideoTexture(video)
-        const material = new THREE.Material(texture);
-        console.log(results);
-        //results[0].scene.children[5].material = material;
+        theeVideo.loop = true;
+        theeVideo.autoplay = true;
+        const texture = new THREE.VideoTexture(theeVideo)
+        const material = new THREE.MeshBasicMaterial({map:texture});
+        material.wrapS = 1000;
+        material.wrapT = 1000;
+
+        console.log(results[0].scene.children[5].material.map);
+        console.log(material.map);
+
+        results[0].scene.children[5].material = material;
     }).catch((e)=>{
         console.error(e);wd
     })
@@ -94,11 +113,14 @@ const main = (function(){
 
     function animate(){
         requestAnimationFrame( animate );
-        
         movement();
         renderer.render( scene, camera );
     };
 
+    function positionTexture(val1, val2){
+        scene.children[1].children[5].material.map.offset.x +=val1;
+        scene.children[1].children[5].material.map.offset.y +=val2;
+    }
 
     function requestPointerLock(){
         renderer.domElement.requestPointerLock();
@@ -122,6 +144,7 @@ const main = (function(){
         groundCheck();
         if(!grounded){
             applyGravity(camera);
+            console.log(scene.children);
         }
         applyMovement(camera);
 
