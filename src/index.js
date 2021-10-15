@@ -1,5 +1,8 @@
 import modelLoader from './Models/modelLoader.js';
 import video from './Models/Well_Water.webm';
+import look from './subScripts/look.js';
+import movement, {logKey, removeKey} from './subScripts/movement.js';
+import interact from './subScripts/interact.js';
 
 const THREE = require('three');
 
@@ -7,70 +10,15 @@ const main = (function(){
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
-    const raycaster = new THREE.Raycaster();
-
-    const light = new THREE.PointLight();
-    let grounded = false;
-    let movementKey = '';
-    let movementArray = [false, false, false, false];
-    let eulerCamera = new THREE.Euler(0,0,0, 'YXZ');
-
-    document.addEventListener('keydown', logKey);
-    document.addEventListener('keyup', removeKey);
-    document.addEventListener('mousemove', look);
-    document.addEventListener('click', requestPointerLock);
-
     
 
-    function logKey(e){
-        if(e.key== 'w'){
-            movementArray[0] = true;
-        }
-        if(e.key == 'a'){
-            movementArray[1] = true;
-        }
-        if(e.key == 's'){
-            movementArray[2] = true;
-        }
-        if(e.key == 'd'){
-            movementArray[3] = true;
-        }
+    const light = new THREE.PointLight();
+    
 
-        //testing shit
-        if(e.key == 'ArrowUp'){
-            positionTexture(.01, 0);
-        }
-        if(e.key == 'ArrowDown'){
-            positionTexture(-.01, 0);
-        }
-        if(e.key == 'ArrowLeft'){
-            positionTexture(0, -.01);
-        }
-        if(e.key == 'ArrowRight'){
-            positionTexture(0, .01);
-        }
-    }
-    function removeKey(e){
-        if(e.key == 'w'){
-            movementArray[0] = false;
-        }
-        if(e.key == 'a'){
-            movementArray[1] = false;
-        }
-        if(e.key == 's'){
-            movementArray[2] = false;
-        }
-        if(e.key == 'd'){
-            movementArray[3] = false;
-        }
-    }
-
-    //spin off to own script.
-    function look(e){
-       eulerCamera.y -= e.movementX * .001;
-       eulerCamera.x -= e.movementY * .001;
-       camera.quaternion.setFromEuler(eulerCamera);
-    }
+    document.addEventListener('keydown', (e)=>{logKey(e,interact, scene,camera)});
+    document.addEventListener('keyup', removeKey);
+    document.addEventListener('mousemove', (e)=>{look(e, camera)});
+    document.addEventListener('click', requestPointerLock);
 
     //Light
     light.position.x = 5;
@@ -94,13 +42,11 @@ const main = (function(){
         theeVideo.autoplay = true;
         const texture = new THREE.VideoTexture(theeVideo)
         const material = new THREE.MeshBasicMaterial({map:texture});
-        material.wrapS = 1000;
-        material.wrapT = 1000;
-
-        console.log(results[0].scene.children[5].material.map);
-        console.log(material.map);
+        material.map.offset.x = -.47;
+        material.map.offset.y = -.44;
 
         results[0].scene.children[5].material = material;
+
     }).catch((e)=>{
         console.error(e);wd
     })
@@ -113,63 +59,23 @@ const main = (function(){
 
     function animate(){
         requestAnimationFrame( animate );
-        movement();
+        movement(camera, scene);
         renderer.render( scene, camera );
     };
 
     function positionTexture(val1, val2){
         scene.children[1].children[5].material.map.offset.x +=val1;
         scene.children[1].children[5].material.map.offset.y +=val2;
+        console.log(scene.children[1].children[5].material.map.offset);
     }
 
     function requestPointerLock(){
         renderer.domElement.requestPointerLock();
     }
 
-    function groundCheck(){
-        let down = new THREE.Vector3(0,-1,0);
-        raycaster.set(camera.position, down);
-        const intersects = raycaster.intersectObjects(scene.children);
-        try{        if(intersects[0].distance <3){
-            grounded = true;
-        }
-        else{
-            grounded = false;
-        }}
-        catch(error){console.error(error)}
 
-    }
 
-    function movement(){
-        groundCheck();
-        if(!grounded){
-            applyGravity(camera);
-            console.log(scene.children);
-        }
-        applyMovement(camera);
-
-    }
-    function applyGravity(char){
-        char.position.y -= .2;
-    }
-    function applyMovement(char){
-        if(movementArray[0]){
-            char.position.z -= .1* Math.cos(char.rotation.y);
-            char.position.x -= .1 * Math.sin(char.rotation.y);
-        }
-        if(movementArray[1]){
-            char.position.z += .1* Math.sin(char.rotation.y);
-            char.position.x -= .1 * Math.cos(char.rotation.y);
-        }
-        if(movementArray[2]){
-            char.position.z += .1* Math.cos(char.rotation.y);
-            char.position.x += .1 * Math.sin(char.rotation.y);
-        }
-        if(movementArray[3]){
-            char.position.z -= .1* Math.sin(char.rotation.y);
-            char.position.x += .1 * Math.cos(char.rotation.y);
-        }
-    }
+    
     animate();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
