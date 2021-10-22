@@ -1,8 +1,11 @@
 import modelLoader from './Models/modelLoader.js';
 import video from './Models/Well_Water.webm';
+import spawnSpirit from './subScripts/SpawnSpirit.js';
 import look from './subScripts/look.js';
 import movement, {logKey, removeKey} from './subScripts/movement.js';
 import interact from './subScripts/interact.js';
+import {collection, doc, onSnapshot, query, limit, orderBy} from 'firebase/firestore';
+import db from './subScripts/firebase.js';
 
 const THREE = require('three');
 
@@ -11,6 +14,7 @@ const main = (function(){
     const camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
     
+    let testbuffer=1;
 
     const light = new THREE.PointLight();
     
@@ -48,7 +52,7 @@ const main = (function(){
         results[0].scene.children[5].material = material;
 
     }).catch((e)=>{
-        console.error(e);wd
+        //console.error(e);
     })
 
 
@@ -73,9 +77,22 @@ const main = (function(){
         renderer.domElement.requestPointerLock();
     }
 
+    const q = query(collection(db, 'messages'), orderBy('timestamp'), limit(10));
 
-
+    const mySnap= onSnapshot(q, (val)=>{
+        val.docChanges().forEach((t)=>{
+            const newSpirit = spawnSpirit(t);
+            newSpirit.position.x = testbuffer;
+            newSpirit.position.y = testbuffer;
+            newSpirit.position.z = testbuffer;
+            testbuffer++;
+            scene.add(newSpirit);
+        })
     
+    },(error)=>{
+        console.log(error);
+    }
+    )
     animate();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);

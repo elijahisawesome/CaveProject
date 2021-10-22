@@ -5,6 +5,8 @@ const raycaster = new THREE.Raycaster();
 let movementArray = [false, false, false, false];
 let grounded = false;
 
+let defaultRotation = new THREE.Quaternion()
+
 function logKey(e, interact,scene,camera){
     if(e.key== 'w'){
         movementArray[0] = true;
@@ -89,22 +91,44 @@ function applyGravity(char){
     char.position.y -= .2;
 }
 function applyMovement(char){
-    if(movementArray[0]){
-        char.position.z -= .1* Math.cos(char.rotation.y);
-        char.position.x -= .1 * Math.sin(char.rotation.y);
+    if(char.rotation.z >Math.PI/2 || char.rotation.z < -Math.PI/2)
+    {        
+        if(movementArray[0]){
+            char.position.z += .1* Math.cos(char.rotation.y);
+            char.position.x -= .1 * Math.sin(char.rotation.y);
+        }
+        if(movementArray[1]){
+            char.position.z += .1* Math.sin(char.rotation.y);
+            char.position.x += .1 * Math.cos(char.rotation.y);
+        }
+        if(movementArray[2]){
+            char.position.z -= .1* Math.cos(char.rotation.y);
+            char.position.x += .1 * Math.sin(char.rotation.y);
+        }
+        if(movementArray[3]){
+            char.position.z -= .1* Math.sin(char.rotation.y);
+            char.position.x -= .1 * Math.cos(char.rotation.y);
+        }
     }
-    if(movementArray[1]){
-        char.position.z += .1* Math.sin(char.rotation.y);
-        char.position.x -= .1 * Math.cos(char.rotation.y);
+    else{
+        if(movementArray[0]){
+            char.position.z -= .1* Math.cos(char.rotation.y);
+            char.position.x -= .1 * Math.sin(char.rotation.y);
+        }
+        if(movementArray[1]){
+            char.position.z += .1* Math.sin(char.rotation.y);
+            char.position.x -= .1 * Math.cos(char.rotation.y);
+        }
+        if(movementArray[2]){
+            char.position.z += .1* Math.cos(char.rotation.y);
+            char.position.x += .1 * Math.sin(char.rotation.y);
+        }
+        if(movementArray[3]){
+            char.position.z -= .1* Math.sin(char.rotation.y);
+            char.position.x += .1 * Math.cos(char.rotation.y);
+        }
     }
-    if(movementArray[2]){
-        char.position.z += .1* Math.cos(char.rotation.y);
-        char.position.x += .1 * Math.sin(char.rotation.y);
-    }
-    if(movementArray[3]){
-        char.position.z -= .1* Math.sin(char.rotation.y);
-        char.position.x += .1 * Math.cos(char.rotation.y);
-    }
+    
 }
 
 

@@ -5,8 +5,9 @@ export default function messageCard(submitCard){
         card.id = 'message';
         card.innerText = 'Message: ';
     card.append(inputMessage);
-    sendMessage.addEventListener('click', (e)=>{submitCard(e)})
     card.append(sendMessage);
+    
+    sendMessage.addEventListener('click', (e)=>{submitCard(e, inputMessage.value)})
 
     return card;
 

@@ -1,0 +1,11 @@
+#message{
+    width: 500px;
+    height: 300px;
+    z-index: 99;
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin-left:-250px;
+    margin-top:-150px;
+    background: white;
+}
