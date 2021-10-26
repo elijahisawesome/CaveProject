@@ -13,8 +13,10 @@ const main = (function(){
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
+    const clock = new THREE.Clock();
+    let mixers = [];
     
-    let testbuffer=1;
+    let testbuffer=2;
 
     const light = new THREE.PointLight();
     
@@ -65,6 +67,15 @@ const main = (function(){
         requestAnimationFrame( animate );
         movement(camera, scene);
         renderer.render( scene, camera );
+        let deltaTime = clock.getDelta();
+
+
+        mixers.forEach(mixer =>{
+            mixer.update(deltaTime);
+        })
+        
+        
+
     };
 
     function positionTexture(val1, val2){
@@ -81,12 +92,28 @@ const main = (function(){
 
     const mySnap= onSnapshot(q, (val)=>{
         val.docChanges().forEach((t)=>{
-            const newSpirit = spawnSpirit(t);
-            newSpirit.position.x = testbuffer;
-            newSpirit.position.y = testbuffer;
-            newSpirit.position.z = testbuffer;
-            testbuffer++;
-            scene.add(newSpirit);
+            const newSpirit = Promise.resolve(spawnSpirit(t));
+            newSpirit.then(result=>{
+
+                const mixer = new THREE.AnimationMixer(result.scene);
+                mixers.push(mixer);
+
+                const action = mixer.clipAction(result.animations[0])
+
+                result.scene.position.x = testbuffer;
+                result.scene.position.y = -8;
+                result.scene.position.z = testbuffer;
+
+                result.scene.scale.y = 3;
+                result.scene.scale.z = 3;
+                result.scene.scale.x = 3;
+
+                testbuffer++;
+                scene.add(result.scene);
+                action.setLoop(THREE.LoopRepeat);
+                action.play();
+            })
+
         })
     
     },(error)=>{

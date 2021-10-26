@@ -1,13 +1,13 @@
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
 import Well_And_Scene from './Well_And_Scene.glb'
 import Text_And_Keys from './Well_Text_And_Keys.glb';
+import Spirits from './Spirit.glb';
 
-
+let loader = new GLTFLoader();
 
 
 const modelLoader = function(){
     let models;
-    let loader = new GLTFLoader();
     //let Well_And_Scene = './Well_And_Scene.glb'
 
 
@@ -37,4 +37,14 @@ const modelLoader = function(){
     
 }
 
+const spirit = function(){
+    let spirits = loader.loadAsync(
+        Spirits,
+        null,
+        function(error){console.error(error)}
+    )
+    return Promise.resolve(spirits);
+}
+
 export default modelLoader
+export {spirit}

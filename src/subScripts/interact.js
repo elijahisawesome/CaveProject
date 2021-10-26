@@ -14,9 +14,13 @@ export default function interact(raycaster, scene, camera, isAMessage){
         if(intersects[0].object.name == 'Well001' && intersects[0].distance <3){
             setupNewCard();
         }
-        else if (intersects[0].object.name == 'message' && intersects[0].distance <3){
-            setupFilledCard(intersects[0].object.message)
+        else if (intersects[0].object.name == 'Spirit' && intersects[0].distance <3){
+            setupFilledCard(intersects[0].object.parent.message)
         }
+        else{
+            console.log(intersects[0]);
+        }
+
     }
     else{
 

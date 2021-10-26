@@ -4,6 +4,7 @@ const raycaster = new THREE.Raycaster();
 
 let movementArray = [false, false, false, false];
 let grounded = false;
+let jumping = false;
 
 let defaultRotation = new THREE.Quaternion()
 
@@ -23,8 +24,8 @@ function logKey(e, interact,scene,camera){
     if(e.key =='e'){
         interact(raycaster, scene,camera);
     }
-    if(e.key =='Space'){
-        jump();
+    if(e.key ==' '){
+        jump(camera);
     }
     /*
         testing
@@ -61,32 +62,43 @@ function removeKey(e){
         
     }
 }
-function jump(){
-
+function jump(char){
+    if(grounded){
+        jumping = true;
+        setTimeout(()=>{jumping = false}, 500)
+    }
 }
 
 export default function movement(camera, scene){
     groundCheck(camera, scene);
-    if(!grounded){
+    if(!grounded && !jumping){
         applyGravity(camera);
     }
+    else if(jumping){
+        applyJump(camera)
+    }
     applyMovement(camera);
+    
 }
 
 function groundCheck(camera, scene){
     let down = new THREE.Vector3(0,-1,0);
     raycaster.set(camera.position, down);
     const intersects = raycaster.intersectObjects(scene.children);
-    try{        if(intersects[0].distance <3){
+    try{        
+        if(intersects[0].distance <3 && !jumping){
         grounded = true;
+        camera.position.y = intersects[0].point.y +2;
     }
     else{
         grounded = false;
     }}
-    catch(error){console.error(error)}
+    catch(error){}
 
 }
-
+function applyJump(char){
+    char.position.y += .2;
+}
 function applyGravity(char){
     char.position.y -= .2;
 }
