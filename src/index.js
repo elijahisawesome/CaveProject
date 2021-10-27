@@ -15,6 +15,7 @@ const main = (function(){
     const renderer = new THREE.WebGLRenderer();
     const clock = new THREE.Clock();
     let mixers = [];
+    let collidables = [];
     
     let testbuffer=2;
 
@@ -38,6 +39,7 @@ const main = (function(){
     models.then(results=>{
         results.forEach(result =>{
             console.log(result.scene);
+            collidables.push(result.scene);
             scene.add(result.scene);
         })
 
@@ -65,7 +67,7 @@ const main = (function(){
 
     function animate(){
         requestAnimationFrame( animate );
-        movement(camera, scene);
+        movement(camera, scene, collidables);
         renderer.render( scene, camera );
         let deltaTime = clock.getDelta();
 

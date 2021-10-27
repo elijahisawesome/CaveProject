@@ -1,3 +1,5 @@
+import collisionDetection, {applyCollisionBox} from './collisionDetection.js';
+
 const THREE = require('three');
 const raycaster = new THREE.Raycaster();
 
@@ -5,23 +7,31 @@ const raycaster = new THREE.Raycaster();
 let movementArray = [false, false, false, false];
 let grounded = false;
 let jumping = false;
+let moving = false;
+let appliedCollisionBox = false;
+let collider;
 
 let defaultRotation = new THREE.Quaternion()
 
 function logKey(e, interact,scene,camera){
     if(e.key== 'w'){
         movementArray[0] = true;
+        moving = true;
     }
     if(e.key == 'a'){
+        moving = true;
         movementArray[1] = true;
     }
     if(e.key == 's'){
+        moving = true;
         movementArray[2] = true;
     }
     if(e.key == 'd'){
+        moving = true;
         movementArray[3] = true;
     }
     if(e.key =='e'){
+        moving = true;
         interact(raycaster, scene,camera);
     }
     if(e.key ==' '){
@@ -44,15 +54,19 @@ function logKey(e, interact,scene,camera){
 }
 function removeKey(e){
     if(e.key == 'w'){
+        moving = false;
         movementArray[0] = false;
     }
     if(e.key == 'a'){
+        moving = false;
         movementArray[1] = false;
     }
     if(e.key == 's'){
+        moving = false;
         movementArray[2] = false;
     }
     if(e.key == 'd'){
+        moving = false;
         movementArray[3] = false;
     }
     if(e.key =='e'){
@@ -69,7 +83,11 @@ function jump(char){
     }
 }
 
-export default function movement(camera, scene){
+export default function movement(camera, scene, collidables){
+    if(!appliedCollisionBox){
+        appliedCollisionBox = true;
+        collider = applyCollisionBox(camera,scene);
+    }
     groundCheck(camera, scene);
     if(!grounded && !jumping){
         applyGravity(camera);
@@ -78,6 +96,8 @@ export default function movement(camera, scene){
         applyJump(camera)
     }
     applyMovement(camera);
+    collisionDetection(camera, collider, raycaster, moving, collidables);
+    
     
 }
 
@@ -87,6 +107,9 @@ function groundCheck(camera, scene){
     const intersects = raycaster.intersectObjects(scene.children);
     try{        
         if(intersects[0].distance <3 && !jumping){
+            if(intersects[0].object.name == 'Well001'){
+                return;
+            }
         grounded = true;
         camera.position.y = intersects[0].point.y +2;
     }
