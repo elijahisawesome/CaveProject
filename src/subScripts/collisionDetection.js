@@ -3,7 +3,7 @@ import { Vector2 } from 'three';
 const THREE = require('three');
 
 export default function collisionDetection(camera, collider, raycaster, moving, collidables){
-    if(!!collider && collider.position != camera.position){
+    if(!!collider && compareColliderAndCamera(camera,collider)){
         collider.position.y = camera.position.y+.3;
         collider.position.z = camera.position.z;
         collider.position.x = camera.position.x;
@@ -36,22 +36,15 @@ export default function collisionDetection(camera, collider, raycaster, moving, 
                 }
             }
         }
-        /*
-        positions.forEach((pos, index) =>
-        {
-            vector.fromBufferAttribute(positions, index);
-            vector.applyMatrix4(collider.matrixWorld);
-            
-            let directionVector = vector.subSelf(collider.position);
-
-            let ray= new THREE.Ray(collider.position, directionVector.clone().normalize());
-            let collisionResults = ray.intersectObjects();
-            if (collisionResults.length>0 && collisionResults[0].distance < directionVector.length()){
-                console.log('collision');
-            }
-        }
-        )*/
     }
+}
+
+function compareColliderAndCamera(camera,collider){
+    let moving = true;
+    if(camera.position.y == collider.position.y+3 && camera.position.x == collider.position.x && camera.position.z == collider.position.z){
+        moving = false;
+    }
+    return moving;
 }
 
 function applyCollisionBox(camera, scene){

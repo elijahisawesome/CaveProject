@@ -1,6 +1,6 @@
 import modelLoader from './Models/modelLoader.js';
 import video from './Models/Well_Water.webm';
-import spawnSpirit from './subScripts/SpawnSpirit.js';
+import spawnSpirit, {positionNewSpirit, dropSpirits} from './subScripts/SpawnSpirit.js';
 import look from './subScripts/look.js';
 import movement, {logKey, removeKey} from './subScripts/movement.js';
 import interact from './subScripts/interact.js';
@@ -16,6 +16,8 @@ const main = (function(){
     const clock = new THREE.Clock();
     let mixers = [];
     let collidables = [];
+    let spiritArray = [];
+    let spiritsAreSetup = false;
     
     let testbuffer=2;
 
@@ -56,7 +58,7 @@ const main = (function(){
         results[0].scene.children[5].material = material;
 
     }).catch((e)=>{
-        //console.error(e);
+        
     })
 
 
@@ -68,6 +70,9 @@ const main = (function(){
     function animate(){
         requestAnimationFrame( animate );
         movement(camera, scene, collidables);
+        if(!spiritsAreSetup){
+            spiritsAreSetup = dropSpirits(spiritArray, scene);
+        }
         renderer.render( scene, camera );
         let deltaTime = clock.getDelta();
 
@@ -99,18 +104,11 @@ const main = (function(){
 
                 const mixer = new THREE.AnimationMixer(result.scene);
                 mixers.push(mixer);
-
                 const action = mixer.clipAction(result.animations[0])
 
-                result.scene.position.x = testbuffer;
-                result.scene.position.y = -8;
-                result.scene.position.z = testbuffer;
+                positionNewSpirit(result.scene);
+                spiritArray.push(result.scene);
 
-                result.scene.scale.y = 3;
-                result.scene.scale.z = 3;
-                result.scene.scale.x = 3;
-
-                testbuffer++;
                 scene.add(result.scene);
                 action.setLoop(THREE.LoopRepeat);
                 action.play();

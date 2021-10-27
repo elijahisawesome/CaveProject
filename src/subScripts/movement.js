@@ -16,22 +16,17 @@ let defaultRotation = new THREE.Quaternion()
 function logKey(e, interact,scene,camera){
     if(e.key== 'w'){
         movementArray[0] = true;
-        moving = true;
     }
     if(e.key == 'a'){
-        moving = true;
         movementArray[1] = true;
     }
     if(e.key == 's'){
-        moving = true;
         movementArray[2] = true;
     }
     if(e.key == 'd'){
-        moving = true;
         movementArray[3] = true;
     }
     if(e.key =='e'){
-        moving = true;
         interact(raycaster, scene,camera);
     }
     if(e.key ==' '){
@@ -54,19 +49,15 @@ function logKey(e, interact,scene,camera){
 }
 function removeKey(e){
     if(e.key == 'w'){
-        moving = false;
         movementArray[0] = false;
     }
     if(e.key == 'a'){
-        moving = false;
         movementArray[1] = false;
     }
     if(e.key == 's'){
-        moving = false;
         movementArray[2] = false;
     }
     if(e.key == 'd'){
-        moving = false;
         movementArray[3] = false;
     }
     if(e.key =='e'){
@@ -117,8 +108,8 @@ function groundCheck(camera, scene){
         grounded = false;
     }}
     catch(error){}
-
 }
+
 function applyJump(char){
     char.position.y += .2;
 }
