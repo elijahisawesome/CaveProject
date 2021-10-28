@@ -28,7 +28,6 @@ export default function interact(raycaster, scene, camera, isAMessage){
 }
 
 async function setData(msg){
-
     
     await addDoc(collection(db, 'messages'), {
         message: msg,

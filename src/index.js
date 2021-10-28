@@ -26,7 +26,6 @@ const main = (function(){
 
     document.addEventListener('keydown', (e)=>{logKey(e,interact, scene,camera)});
     document.addEventListener('keyup', removeKey);
-    document.addEventListener('mousemove', (e)=>{look(e, camera)});
     document.addEventListener('click', requestPointerLock);
 
     //Light
@@ -93,6 +92,7 @@ const main = (function(){
 
     function requestPointerLock(){
         renderer.domElement.requestPointerLock();
+        document.addEventListener('mousemove', (e)=>{look(e, camera)}, false);
     }
 
     const q = query(collection(db, 'messages'), orderBy('timestamp'), limit(10));

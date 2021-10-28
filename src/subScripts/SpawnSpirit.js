@@ -36,7 +36,7 @@ function dropSpirits(spiritArray, scene){
         raycaster.set(pos, down);
         const intersects = raycaster.intersectObjects(scene.children);
         try{
-            if(intersects[0].distance >0){
+            if(intersects[0].distance >1){
                 setupComplete = false;
                 applyGravity(spirit);
             }
@@ -50,6 +50,6 @@ function dropSpirits(spiritArray, scene){
     return setupComplete;
 }
 function applyGravity(spirit){
-    spirit.position.y -= .2;
+    spirit.position.y -= .1;
 }
 export {positionNewSpirit, dropSpirits}

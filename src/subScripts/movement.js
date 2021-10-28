@@ -97,7 +97,7 @@ function groundCheck(camera, scene){
     raycaster.set(camera.position, down);
     const intersects = raycaster.intersectObjects(scene.children);
     try{        
-        if(intersects[0].distance <3 && !jumping){
+        if(intersects[0].distance <2.2 && !jumping){
             if(intersects[0].object.name == 'Well001'){
                 return;
             }
