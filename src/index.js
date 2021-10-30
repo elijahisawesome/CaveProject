@@ -8,6 +8,8 @@ import {collection, doc, onSnapshot, query, limit, orderBy} from 'firebase/fires
 import db from './subScripts/firebase.js';
 
 const THREE = require('three');
+(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+
 
 const main = (function(){
     const scene = new THREE.Scene();
@@ -112,6 +114,8 @@ const main = (function(){
                 scene.add(result.scene);
                 action.setLoop(THREE.LoopRepeat);
                 action.play();
+                console.log('spawning');
+                spiritsAreSetup = false;
             })
 
         })

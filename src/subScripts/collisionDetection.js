@@ -50,7 +50,7 @@ function compareColliderAndCamera(camera,collider){
 function applyCollisionBox(camera, scene){
     
     const geometry = new THREE.CylinderGeometry(.5, .5, 1, 8);
-    const material = new THREE.MeshBasicMaterial({color:0x00ff00});
+    const material = new THREE.MeshBasicMaterial({color:0x000000});
     const sphere = new THREE.Mesh(geometry,material);
     sphere.name = 'collider';
 
