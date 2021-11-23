@@ -31,6 +31,7 @@ const modelLoader = function(){
     
         return Promise.all([wellAndScene, textAndKeys]).then((results)=>{
         models = results;
+        models[1].scene.name = 'Instructions';
         return models;
     });
 

@@ -9,6 +9,7 @@ export default function messageCard(submitCard){
     
     sendMessage.addEventListener('click', (e)=>{submitCard(e, inputMessage.value)})
 
+    card.addEventListener('click',(e)=>{e.stopPropagation();})
+    card.addEventListener('keydown',(e)=>{e.stopPropagation();})
     return card;
-
 }

@@ -13,7 +13,7 @@ let collider;
 
 let defaultRotation = new THREE.Quaternion()
 
-function logKey(e, interact,scene,camera){
+function logKey(e, interact,scene,camera, handleLookEvent){
     if(e.key== 'w'){
         movementArray[0] = true;
     }
@@ -27,7 +27,7 @@ function logKey(e, interact,scene,camera){
         movementArray[3] = true;
     }
     if(e.key =='e'){
-        interact(raycaster, scene,camera);
+        interact(raycaster, scene,camera, handleLookEvent);
     }
     if(e.key ==' '){
         jump(camera);
