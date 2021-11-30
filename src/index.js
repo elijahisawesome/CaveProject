@@ -30,7 +30,7 @@ const main = (function(){
     const light = new THREE.PointLight();
     
 
-    document.addEventListener('keydown', (e)=>{logKey(e,interact, scene,camera, handleLookEvent)});
+    document.addEventListener('keydown', (e)=>{logKey(e,interact, scene,camera)});
     document.addEventListener('keyup', removeKey);
     document.addEventListener('click', requestPointerLock);
     document.addEventListener('pointerlockchange', lockChangeDispatch);

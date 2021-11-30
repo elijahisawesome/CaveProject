@@ -1,17 +1,16 @@
 import db from './firebase.js';
 import {collection, getDocs, addDoc, doc, Timestamp} from 'firebase/firestore';
 import '../styles/wishes.css';
-import message from '../components/message.js';
+import {readMessageCard, newMessageCard} from '../components/message.js';
 
 const THREE = require('three');
 
-export default function interact(raycaster, scene, camera, handleLookEvent){ 
+export default function interact(raycaster, scene, camera,){ 
     raycaster.setFromCamera(new THREE.Vector2(), camera);
 
     const intersects = raycaster.intersectObjects(scene.children);
     if(intersects[0].object.name == 'Well001' && intersects[0].distance <3){
         setupNewCard();
-        //document.removeEventListener('mousemove', handleLookEvent);
         document.exitPointerLock = document.exitPointerLock;
         document.exitPointerLock();
     }
@@ -42,10 +41,12 @@ async function setData(msg){
             const oldWish = document.getElementById('message');
             oldWish.remove();
         }
-        const newWish = message(submitCard);
+        const newWish = newMessageCard(submitCard);
 
         document.body.append(newWish);
     }
     function setupFilledCard(message){
-        console.log(message);
+        const newCard = readMessageCard(message);
+
+        document.body.append(newCard);
     }

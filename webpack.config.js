@@ -29,7 +29,7 @@ module.exports = {
   module: {
     rules: [
       /*{
-        test: /three\/examples\/js/,
+        test: /three\/examples\/js,
         use: 'imports-loader?THREE=three'
       },*/
         {
@@ -58,14 +58,13 @@ module.exports = {
         },
         {
           test: /\.(webm)$/,
-          use: ['file-loader'],
+          use: 'file-loader'
         },
       ],
   },
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    clean: true,
   }
   
 

@@ -13,7 +13,7 @@ let collider;
 
 let defaultRotation = new THREE.Quaternion()
 
-function logKey(e, interact,scene,camera, handleLookEvent){
+function logKey(e, interact,scene,camera){
     if(e.key== 'w'){
         movementArray[0] = true;
     }
@@ -27,7 +27,7 @@ function logKey(e, interact,scene,camera, handleLookEvent){
         movementArray[3] = true;
     }
     if(e.key =='e'){
-        interact(raycaster, scene,camera, handleLookEvent);
+        interact(raycaster, scene,camera);
     }
     if(e.key ==' '){
         jump(camera);
@@ -45,7 +45,8 @@ function logKey(e, interact,scene,camera, handleLookEvent){
         }
         if(e.key == 'ArrowRight'){
             positionTexture(0, .01);
-        }*/
+        }
+    */
 }
 function removeKey(e){
     if(e.key == 'w'){
