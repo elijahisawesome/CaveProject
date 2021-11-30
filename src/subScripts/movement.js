@@ -118,44 +118,27 @@ function applyGravity(char){
     char.position.y -= .2;
 }
 function applyMovement(char){
-    if(char.rotation.z >Math.PI/2 || char.rotation.z < -Math.PI/2)
-    {        
-        if(movementArray[0]){
-            char.position.z += .1* Math.cos(char.rotation.y);
-            char.position.x -= .1 * Math.sin(char.rotation.y);
-        }
-        if(movementArray[1]){
-            char.position.z += .1* Math.sin(char.rotation.y);
-            char.position.x += .1 * Math.cos(char.rotation.y);
-        }
-        if(movementArray[2]){
-            char.position.z -= .1* Math.cos(char.rotation.y);
-            char.position.x += .1 * Math.sin(char.rotation.y);
-        }
-        if(movementArray[3]){
-            char.position.z -= .1* Math.sin(char.rotation.y);
-            char.position.x -= .1 * Math.cos(char.rotation.y);
-        }
-    }
-    else{
-        if(movementArray[0]){
-            char.position.z -= .1* Math.cos(char.rotation.y);
-            char.position.x -= .1 * Math.sin(char.rotation.y);
-        }
-        if(movementArray[1]){
-            char.position.z += .1* Math.sin(char.rotation.y);
-            char.position.x -= .1 * Math.cos(char.rotation.y);
-        }
-        if(movementArray[2]){
-            char.position.z += .1* Math.cos(char.rotation.y);
-            char.position.x += .1 * Math.sin(char.rotation.y);
-        }
-        if(movementArray[3]){
-            char.position.z -= .1* Math.sin(char.rotation.y);
-            char.position.x += .1 * Math.cos(char.rotation.y);
-        }
-    }
+    char.rotation.order = 'YXZ';
     
+    const heading = char.rotation.y;
+    const newYRot = heading > 0 ? heading : (2 * Math.PI) + heading;
+
+    if(movementArray[0]){
+        char.position.z -= .1*Math.cos(newYRot);
+        char.position.x -= .1*Math.sin(newYRot);
+    }
+    if(movementArray[1]){
+        char.position.z += .1* Math.sin(newYRot);
+        char.position.x -= .1 * Math.cos(newYRot);
+    }
+    if(movementArray[2]){
+        char.position.z += .1* Math.cos(newYRot);
+        char.position.x += .1 * Math.sin(newYRot);
+    }
+    if(movementArray[3]){
+        char.position.z -= .1* Math.sin(newYRot);
+        char.position.x += .1 * Math.cos(newYRot);
+    } 
 }
 
 

@@ -73,8 +73,9 @@ const main = (function(){
 
 
 
-    camera.position.z = 10;
+    camera.position.x = 10;
     camera.position.y = 5;
+    camera.rotation.y = Math.PI/2;
 
 
     function animate(){
