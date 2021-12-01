@@ -11,9 +11,7 @@ let moving = false;
 let appliedCollisionBox = false;
 let collider;
 
-let defaultRotation = new THREE.Quaternion()
-
-function logKey(e, interact,scene,camera){
+function logKey(e, interact,scene,camera, renderer){
     if(e.key== 'w'){
         movementArray[0] = true;
     }
@@ -27,26 +25,12 @@ function logKey(e, interact,scene,camera){
         movementArray[3] = true;
     }
     if(e.key =='e'){
-        interact(raycaster, scene,camera);
+        interact(raycaster, scene,camera, renderer);
     }
     if(e.key ==' '){
         jump(camera);
     }
-    /*
-        testing
-        if(e.key == 'ArrowUp'){
-            positionTexture(.01, 0);
-        }
-        if(e.key == 'ArrowDown'){
-            positionTexture(-.01, 0);
-        }
-        if(e.key == 'ArrowLeft'){
-            positionTexture(0, -.01);
-        }
-        if(e.key == 'ArrowRight'){
-            positionTexture(0, .01);
-        }
-    */
+
 }
 function removeKey(e){
     if(e.key == 'w'){
@@ -144,3 +128,26 @@ function applyMovement(char){
 
 export {logKey, removeKey};
 
+    /*
+        //testing
+        if(e.key == 'ArrowUp'){
+            positionTexture(.01, 0);
+        }
+        if(e.key == 'ArrowDown'){
+            positionTexture(-.01, 0);
+        }
+        if(e.key == 'ArrowLeft'){
+            positionTexture(0, -.01);
+        }
+        if(e.key == 'ArrowRight'){
+            positionTexture(0, .01);
+        }
+    
+        
+
+        function positionTexture(val1, val2){
+            console.log(scene.children[2].children[5].material.map.offset);
+            scene.children[2].children[5].material.map.offset.x +=val1;
+            scene.children[2].children[5].material.map.offset.y +=val2;
+        }
+*/

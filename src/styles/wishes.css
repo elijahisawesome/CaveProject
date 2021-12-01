@@ -7,6 +7,11 @@
     left:50%;
     margin-left:-250px;
     margin-top:-150px;
+    align-items: center;
+    justify-content: center;
+    display:flex;
+    font-size: 15px;
+    font-weight: 600;
 }
 .read{
     text-align:center;
@@ -21,4 +26,12 @@
 img{
     height:100%;
     width:100%;
+}
+.back{
+    height:10%;
+    position:relative;
+}
+textarea{
+    background:transparent;
+    height:95%;
 }

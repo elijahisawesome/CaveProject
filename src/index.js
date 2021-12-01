@@ -6,7 +6,8 @@ import movement, {logKey, removeKey} from './subScripts/movement.js';
 import interact from './subScripts/interact.js';
 import {collection, doc, onSnapshot, query, limit, orderBy} from 'firebase/firestore';
 import db from './subScripts/firebase.js';
-import setupInstructions from './subScripts/instructionsSetup.js';
+import setupInstructions, {SetupSecondInstruction} from './subScripts/instructionsSetup.js';
+import { Raycaster } from 'three';
 
 const THREE = require('three');
 (function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
@@ -28,17 +29,16 @@ const main = (function(){
     
 
     const light = new THREE.PointLight();
-    
+    const InstGlow  = new THREE.PointLight(0xdaa520, .9);
 
-    document.addEventListener('keydown', (e)=>{logKey(e,interact, scene,camera)});
+    document.addEventListener('keydown', (e)=>{logKey(e,interact, scene,camera, renderer)});
     document.addEventListener('keyup', removeKey);
     document.addEventListener('click', requestPointerLock);
     document.addEventListener('pointerlockchange', lockChangeDispatch);
+    window.addEventListener( 'resize', onWindowResize, false );
 
     //Light
-    light.position.x = 5;
-    light.position.y = 5;
-    light.position.z = 2;
+    light.position.y = 25;
     scene.add(light);
     
 
@@ -55,17 +55,31 @@ const main = (function(){
             }
         })
 
-        
         const theeVideo = document.createElement('video');
         theeVideo.src = video;
         theeVideo.loop = true;
         theeVideo.autoplay = true;
+        theeVideo.muted = true;
+        theeVideo.play();
         const texture = new THREE.VideoTexture(theeVideo)
         const material = new THREE.MeshBasicMaterial({map:texture});
         material.map.offset.x = -.47;
         material.map.offset.y = -.44;
 
-        results[0].scene.children[5].material = material;
+        console.log(theeVideo);
+
+        results[0].scene.children[6].material = material;
+
+        let softGlow = new THREE.PointLight(0xdaa520, .5);
+        softGlow.position.y = .5;
+        scene.add(softGlow);
+
+        
+        InstGlow.position.x = 25;
+        scene.add(InstGlow);
+        instructions.children.push(InstGlow);
+        console.log(instructions);
+
 
     }).catch((e)=>{
         
@@ -73,10 +87,11 @@ const main = (function(){
 
 
 
-    camera.position.x = 10;
-    camera.position.y = 5;
+    camera.position.x = 25;
+    camera.position.y = 0;
     camera.rotation.y = Math.PI/2;
 
+    renderer.setClearColor(0x87ceeb, 1);
 
     function animate(){
         requestAnimationFrame( animate );
@@ -101,13 +116,18 @@ const main = (function(){
                     console.error(error);
                 }
             }
+            else{
+                try{SetupSecondInstruction(scene, camera, frustum)}
+                catch(error){
+                    console.errror(error);
+                }
+            }
         }
             
         
         
 
     };
-
     
 
     function lockChangeDispatch(){
@@ -155,6 +175,15 @@ const main = (function(){
     animate();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+
+    function onWindowResize(){
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+    
+        renderer.setSize( window.innerWidth, window.innerHeight );
+    
+    }
 })()
 
 

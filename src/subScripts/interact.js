@@ -5,20 +5,27 @@ import {readMessageCard, newMessageCard} from '../components/message.js';
 
 const THREE = require('three');
 
-export default function interact(raycaster, scene, camera,){ 
+export default function interact(raycaster, scene, camera, renderer){ 
     raycaster.setFromCamera(new THREE.Vector2(), camera);
 
     const intersects = raycaster.intersectObjects(scene.children);
-    if(intersects[0].object.name == 'Well001' && intersects[0].distance <3){
-        setupNewCard();
-        document.exitPointerLock = document.exitPointerLock;
+    if(intersects[0].object.name == 'Well_Blocker' && intersects[0].distance <3){
+        setupNewCard(renderer);
+
+        document.querySelector('textarea').focus();
+
         document.exitPointerLock();
     }
     else if (intersects[0].object.name == 'Spirit' && intersects[0].distance <3){
-        setupFilledCard(intersects[0].object.parent.message)
+        setupFilledCard(intersects[0].object.parent.message, renderer)
+
+        document.getElementById('message').focus();
+
+        document.exitPointerLock();
     }
     else{
-        console.log(intersects[0]);
+        console.log(intersects[0].object.name);
+        return
     }
 }
     
@@ -33,7 +40,7 @@ async function setData(msg){
 
 }
 
-    function setupNewCard(){
+    function setupNewCard(renderer){
         function submitCard(e, message){
             e.stopPropagation();
             setData(message);
@@ -41,12 +48,12 @@ async function setData(msg){
             const oldWish = document.getElementById('message');
             oldWish.remove();
         }
-        const newWish = newMessageCard(submitCard);
+        const newWish = newMessageCard(submitCard, renderer);
 
         document.body.append(newWish);
     }
-    function setupFilledCard(message){
-        const newCard = readMessageCard(message);
+    function setupFilledCard(message, renderer){
+        const newCard = readMessageCard(message, renderer);
 
         document.body.append(newCard);
     }
