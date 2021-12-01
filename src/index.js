@@ -146,7 +146,7 @@ const main = (function(){
     }
 
 
-    const q = query(collection(db, 'messages'), orderBy('timestamp'), limit(10));
+    const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'), limit(10));
 
     const mySnap= onSnapshot(q, (val)=>{
         val.docChanges().forEach((t)=>{

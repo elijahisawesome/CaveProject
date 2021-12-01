@@ -50,6 +50,6 @@ function dropSpirits(spiritArray, scene){
     return setupComplete;
 }
 function applyGravity(spirit){
-    spirit.position.y -= .1;
+    spirit.position.y -= .03;
 }
 export {positionNewSpirit, dropSpirits}
