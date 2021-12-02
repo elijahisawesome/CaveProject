@@ -51,6 +51,7 @@ export function SetupSecondInstruction(scene, camera, frustum){
             })
             if(allGone){
                 scene.remove(secondInstructions);
+                scene.remove(Trigger);
                 secondTrigger = true;
             }
         }

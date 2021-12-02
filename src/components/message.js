@@ -1,4 +1,5 @@
 import bkg from '../styles/burnt-parchment.jpg';
+import openingMessage from '../subScripts/openingMessage';
 
 function newMessageCard(submitCard, renderer){
     const card = document.createElement('div');
@@ -16,7 +17,7 @@ function newMessageCard(submitCard, renderer){
     deleteCard.classList.add('back');
     
     deleteCard.addEventListener('click', (e)=>{
-        
+
         const card = document.getElementById('message');
         card.remove();
         requestPointerLock(renderer);
@@ -59,7 +60,38 @@ function readMessageCard(msg, renderer){
     return card;
 }
 
-export {readMessageCard, newMessageCard}
+function openingMessageCard(renderer){
+    const card = document.createElement('div');
+    card.classList.add('read');
+
+    const readMessage = document.createElement('textarea');
+    readMessage.classList.add('textBox')
+    readMessage.readOnly=true;
+
+    const deleteCard = document.createElement('button');
+    card.id = 'message';
+    readMessage.value = openingMessage();
+    card.append(readMessage);
+    card.append(deleteCard);
+    
+    deleteCard.innerText = 'Back';
+    deleteCard.classList.add('back');
+    
+    deleteCard.addEventListener('click', (e)=>{
+        const card = document.getElementById('message');
+        card.remove();
+        requestPointerLock(renderer);
+    })
+
+    card.style.backgroundImage = `url(${bkg})`;
+    readMessage.style.width = '350px';
+    readMessage.style.textAlign = 'left';
+    card.addEventListener('click',(e)=>{e.stopPropagation();})
+    card.addEventListener('keydown',(e)=>{e.stopPropagation();})
+    return card;
+}
+
+export {readMessageCard, newMessageCard, openingMessageCard}
 
 const requestPointerLock = function(renderer){
     renderer.domElement.requestPointerLock();

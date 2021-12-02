@@ -7,7 +7,7 @@ import interact from './subScripts/interact.js';
 import {collection, doc, onSnapshot, query, limit, orderBy} from 'firebase/firestore';
 import db from './subScripts/firebase.js';
 import setupInstructions, {SetupSecondInstruction} from './subScripts/instructionsSetup.js';
-import { Raycaster } from 'three';
+import { openingMessageCard } from './components/message.js';
 
 const THREE = require('three');
 (function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
@@ -35,7 +35,8 @@ const main = (function(){
     document.addEventListener('keyup', removeKey);
     document.addEventListener('click', requestPointerLock);
     document.addEventListener('pointerlockchange', lockChangeDispatch);
-    window.addEventListener( 'resize', onWindowResize, false );
+    window.addEventListener( 'resize', onWindowResize, false);
+    
 
     //Light
     light.position.y = 25;
@@ -175,6 +176,7 @@ const main = (function(){
     animate();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+    document.body.append(openingMessageCard(renderer));
 
     function onWindowResize(){
 
