@@ -1,4 +1,5 @@
 import collisionDetection, {applyCollisionBox} from './collisionDetection.js';
+import {playWalkingSound} from '../Audio/Audio.js'; 
 
 const THREE = require('three');
 const raycaster = new THREE.Raycaster();
@@ -30,6 +31,29 @@ function logKey(e, interact,scene,camera, renderer){
     if(e.key ==' '){
         jump(camera);
     }
+
+            //testing
+            if(e.key == 'ArrowUp'){
+                positionTexture(.01, 0);
+            }
+            if(e.key == 'ArrowDown'){
+                positionTexture(-.01, 0);
+            }
+            if(e.key == 'ArrowLeft'){
+                positionTexture(0, -.01);
+            }
+            if(e.key == 'ArrowRight'){
+                positionTexture(0, .01);
+            }
+        
+            
+    
+            function positionTexture(val1, val2){
+                let topSpirit = scene.getObjectByName('skySpirit');
+                console.log(topSpirit.material.map.offset);
+                topSpirit.material.map.offset.x +=val1;
+                topSpirit.material.map.offset.y +=val2;
+            }
 
 }
 function removeKey(e){
@@ -83,7 +107,7 @@ function groundCheck(camera, scene){
     const intersects = raycaster.intersectObjects(scene.children);
     try{        
         if(intersects[0].distance <2.2 && !jumping){
-            if(intersects[0].object.name == 'Well001'){
+            if(intersects[0].object.name == 'Trigger'){
                 return;
             }
         grounded = true;
@@ -106,23 +130,31 @@ function applyMovement(char){
     
     const heading = char.rotation.y;
     const newYRot = heading > 0 ? heading : (2 * Math.PI) + heading;
+    let moving= false;
 
     if(movementArray[0]){
         char.position.z -= .1*Math.cos(newYRot);
         char.position.x -= .1*Math.sin(newYRot);
+        moving=true;
     }
     if(movementArray[1]){
         char.position.z += .1* Math.sin(newYRot);
         char.position.x -= .1 * Math.cos(newYRot);
+        moving=true;
     }
     if(movementArray[2]){
         char.position.z += .1* Math.cos(newYRot);
         char.position.x += .1 * Math.sin(newYRot);
+        moving=true;
     }
     if(movementArray[3]){
         char.position.z -= .1* Math.sin(newYRot);
         char.position.x += .1 * Math.cos(newYRot);
+        moving=true;
     } 
+    if(moving && grounded){
+        playWalkingSound();
+    }
 }
 
 
@@ -150,4 +182,10 @@ export {logKey, removeKey};
             scene.children[2].children[5].material.map.offset.x +=val1;
             scene.children[2].children[5].material.map.offset.y +=val2;
         }
+*/
+
+/*
+    
+
+
 */

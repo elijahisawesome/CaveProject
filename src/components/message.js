@@ -1,5 +1,6 @@
 import bkg from '../styles/burnt-parchment.jpg';
 import openingMessage from '../subScripts/openingMessage';
+import audioSetup from '../Audio/Audio.js';
 
 function newMessageCard(submitCard, renderer){
     const card = document.createElement('div');
@@ -60,7 +61,7 @@ function readMessageCard(msg, renderer){
     return card;
 }
 
-function openingMessageCard(renderer){
+function openingMessageCard(renderer, listener){
     const card = document.createElement('div');
     card.classList.add('read');
 
@@ -81,6 +82,7 @@ function openingMessageCard(renderer){
         const card = document.getElementById('message');
         card.remove();
         requestPointerLock(renderer);
+        audioSetup(listener);
     })
 
     card.style.backgroundImage = `url(${bkg})`;

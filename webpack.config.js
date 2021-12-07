@@ -60,6 +60,10 @@ module.exports = {
           test: /\.(webm)$/,
           use: 'file-loader'
         },
+        {
+          test: /\.(mp3)$/,
+          use: 'file-loader'
+        }
       ],
   },
   output: {

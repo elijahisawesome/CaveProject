@@ -36,7 +36,7 @@ function dropSpirits(spiritArray, scene){
         raycaster.set(pos, down);
         const intersects = raycaster.intersectObjects(scene.children);
         try{
-            if(intersects[0].distance >1){
+            if(intersects[0].distance >1 || intersects[0].object.name == 'Trigger'){
                 setupComplete = false;
                 applyGravity(spirit);
             }

@@ -27,6 +27,7 @@ export function SetupSecondInstruction(scene, camera, frustum){
         const geometry = new THREE.BoxGeometry(2.5,3,2.5);
         const material = new THREE.MeshBasicMaterial({color: 0xffff00, transparent:true})
         Trigger = new THREE.Mesh(geometry, material);
+        Trigger.name = "Trigger";
         material.opacity = 0;
         scene.add(Trigger);
 

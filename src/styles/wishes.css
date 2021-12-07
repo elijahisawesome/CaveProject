@@ -35,3 +35,12 @@ textarea{
     background:transparent;
     height:95%;
 }
+
+#Crosshair{
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 2px;
+    border-color: rgb(228, 92, 13);
+    position: absolute;
+    z-index: 96;
+}
