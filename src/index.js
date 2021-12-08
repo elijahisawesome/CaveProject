@@ -209,7 +209,7 @@ const main = (function(){
     
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
-    document.body.append(openingMessageCard(renderer, listener));
+    document.body.append(openingMessageCard(renderer, listener, spiritArray));
 
     renderer.shadowMap.enabled = true;
 

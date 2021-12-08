@@ -1,5 +1,6 @@
 const THREE = require('three');
 import {spirit} from '../Models/modelLoader.js';
+import {getSpiritSound} from '../Audio/Audio.js';
 
 export default function spawnSpirit(_message){
     const message = _message.doc._document.data.value.mapValue.fields.message.stringValue
@@ -26,12 +27,12 @@ function positionNewSpirit(obj){
 function dropSpirits(spiritArray, scene){
     let down = new THREE.Vector3(0,-1,0);
     let raycaster = new THREE.Raycaster()
-    let setupComplete = false;
+    let setupComplete = true;
     if(!!spiritArray[0]){
         setupComplete = true;
     }
     spiritArray.forEach(spirit=>{
-
+        
         let pos = new THREE.Vector3(spirit.position.x, spirit.position.y+8, spirit.position.z);
         raycaster.set(pos, down);
         const intersects = raycaster.intersectObjects(scene.children);
