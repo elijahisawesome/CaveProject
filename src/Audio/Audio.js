@@ -78,7 +78,7 @@ function clone(sound, mesh){
         let chime = new THREE.PositionalAudio(listener);
         audioLoader.load(sound, (buffer)=>{
         chime.setBuffer(buffer);
-        chime.setRefDistance(3);
+        chime.setRefDistance(.3);
         chime.setLoop(false);
         secondRandomizer(chime);
         mesh.children[0].add(chime);
